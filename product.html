@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-50 text-slate-800">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuxeStore | Modern Product Showcase</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#0d9488',
+              600: '#0f766e',
+              700: '#115e59',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    .shimmer {
+      background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+  </style>
+</head>
+<body class="min-h-full flex flex-col font-sans antialiased text-slate-800 selection:bg-teal-500 selection:text-white">
+
+  <!-- ================= TOP NAVIGATION ================= -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 transition-all shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20 gap-4">
+        
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-2 group flex-shrink-0">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-teal-500/20 group-hover:scale-105 transition-transform duration-200">
+            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">LuxeStore</span>
+            <span class="hidden sm:inline-block text-[10px] font-bold uppercase tracking-wider text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full ml-1">Catalog</span>
+          </div>
+        </a>
+
+        <!-- Search Bar (Live Search) -->
+        <div class="flex-1 max-w-xl mx-2 sm:mx-6">
+          <div class="relative">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input 
+              id="search-input" 
+              type="text" 
+              placeholder="Search products, brands, tags..." 
+              class="w-full bg-slate-100/80 hover:bg-slate-100 focus:bg-white text-sm text-slate-800 placeholder-slate-400 pl-10 pr-10 py-2.5 rounded-full border border-transparent focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-none transition-all duration-200"
+            />
+            <button id="clear-search-btn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1">
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Actions: Mobile Filter Toggle & Cart -->
+        <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          <button id="mobile-filter-btn" class="lg:hidden p-2.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-600 transition">
+            <i data-lucide="sliders-horizontal" class="w-5 h-5"></i>
+          </button>
+
+          <button id="open-cart-btn" class="relative flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2.5 rounded-xl font-medium text-sm transition-all shadow-md shadow-slate-900/10 active:scale-95">
+            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+            <span class="hidden sm:inline font-semibold">Cart</span>
+            <span id="cart-badge" class="bg-teal-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center transition-transform">0</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO PROMO BANNER ================= -->
+  <section class="bg-gradient-to-r from-slate-900 via-slate-800 to-teal-950 text-white py-8 px-4 relative overflow-hidden">
+    <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+      <div>
+        <span class="inline-block text-xs uppercase tracking-widest font-bold text-teal-400 bg-teal-500/10 border border-teal-500/20 px-3 py-1 rounded-full mb-3">Spring Showcase 2026</span>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight">Explore Premium Essentials</h1>
+        <p class="text-slate-300 text-sm sm:text-base mt-2 max-w-xl leading-relaxed">
+          Discover handpicked lifestyle items, electronics, fragrances, and home decor powered by real-time inventory from DummyJSON.
+        </p>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-xl border border-white/10 text-center">
+          <p class="text-xs text-slate-300">Total Products</p>
+          <p id="total-count" class="text-xl font-black text-white">--</p>
+        </div>
+        <div class="bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-xl border border-white/10 text-center">
+          <p class="text-xs text-slate-300">Fast Shipping</p>
+          <p class="text-xl font-black text-teal-400">Free</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MAIN CONTENT AREA ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex flex-col lg:flex-row gap-8 items-start">
+      
+      <!-- ================= SIDEBAR FILTERS ================= -->
+      <aside id="sidebar-filters" class="w-full lg:w-64 flex-shrink-0 bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hidden lg:block sticky top-24">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+          <div class="flex items-center gap-2">
+            <i data-lucide="filter" class="w-4 h-4 text-teal-600"></i>
+            <h3 class="font-bold text-slate-900 text-base">Filters</h3>
+          </div>
+          <button id="reset-filters-btn" class="text-xs font-semibold text-teal-600 hover:text-teal-700 hover:underline">
+            Reset All
+          </button>
+        </div>
+
+        <!-- Categories -->
+        <div class="py-5 border-b border-slate-100">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Categories</h4>
+          <div id="category-list" class="space-y-1 max-h-64 overflow-y-auto pr-1">
+            <!-- Populated via JS -->
+            <div class="h-8 shimmer rounded-lg mb-1"></div>
+            <div class="h-8 shimmer rounded-lg mb-1"></div>
+            <div class="h-8 shimmer rounded-lg mb-1"></div>
+          </div>
+        </div>
+
+        <!-- Price Range Filter -->
+        <div class="py-5 border-b border-slate-100">
+          <div class="flex justify-between items-center mb-2">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Max Price</h4>
+            <span id="price-val" class="text-xs font-bold text-slate-900">$2000</span>
+          </div>
+          <input id="price-range" type="range" min="10" max="2000" step="10" value="2000" class="w-full accent-teal-600 cursor-pointer">
+          <div class="flex justify-between text-[11px] text-slate-400 mt-1">
+            <span>$10</span>
+            <span>$2000+</span>
+          </div>
+        </div>
+
+        <!-- Stock Availability -->
+        <div class="pt-5">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Availability</h4>
+          <label class="flex items-center gap-2.5 cursor-pointer text-sm text-slate-700 select-none">
+            <input id="in-stock-checkbox" type="checkbox" class="w-4 h-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500">
+            <span>In Stock Only</span>
+          </label>
+        </div>
+      </aside>
+
+      <!-- ================= PRODUCT CATALOG SECTION ================= -->
+      <section class="flex-1 w-full min-w-0">
+        
+        <!-- Controls Bar: Category Badge Pills & Sort dropdown -->
+        <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between pb-6 border-b border-slate-200">
+          <!-- Active filter hints -->
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-xs text-slate-500">Showing:</span>
+            <span id="active-category-pill" class="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-50 text-teal-700 border border-teal-200/80 rounded-full text-xs font-semibold">
+              All Products
+            </span>
+            <span id="results-count-text" class="text-xs text-slate-400">Loading...</span>
+          </div>
+
+          <!-- Sort Select -->
+          <div class="flex items-center gap-2 self-end sm:self-auto">
+            <label for="sort-select" class="text-xs font-medium text-slate-500">Sort by:</label>
+            <div class="relative">
+              <select id="sort-select" class="bg-white border border-slate-200 text-slate-700 text-xs sm:text-sm font-semibold rounded-xl px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 cursor-pointer appearance-none transition shadow-sm">
+                <option value="default">Featured / Default</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="rating-desc">Highest Rated</option>
+                <option value="title-asc">Name (A-Z)</option>
+              </select>
+              <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
+          <!-- Skeletons will show initially -->
+        </div>
+
+        <!-- Empty state container -->
+        <div id="empty-state" class="hidden text-center py-20 px-4">
+          <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
+            <i data-lucide="package-search" class="w-8 h-8"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-800">No products match your criteria</h3>
+          <p class="text-slate-500 text-sm mt-1 max-w-sm mx-auto">Try adjusting your search query, clearing filters or increasing the maximum price.</p>
+          <button id="empty-reset-btn" class="mt-4 px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-semibold hover:bg-slate-800 transition">
+            Clear all filters
+          </button>
+        </div>
+
+        <!-- Pagination / Load More -->
+        <div id="load-more-container" class="mt-12 text-center">
+          <button id="load-more-btn" class="inline-flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-800 font-semibold text-sm rounded-xl transition shadow-sm active:scale-95">
+            <span id="load-more-text">Load More Products</span>
+            <i data-lucide="arrow-down" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- ================= QUICK VIEW MODAL ================= -->
+  <div id="quickview-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="quickview-card" class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl transform scale-95 transition-transform duration-300 relative border border-slate-100">
+      <button id="close-quickview-btn" class="absolute top-4 right-4 z-10 p-2 bg-white/80 hover:bg-slate-100 backdrop-blur-sm rounded-full text-slate-500 hover:text-slate-800 transition shadow-sm">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 sm:p-8">
+        <!-- Gallery -->
+        <div class="flex flex-col gap-3">
+          <div class="aspect-square bg-slate-100 rounded-2xl overflow-hidden border border-slate-100 flex items-center justify-center">
+            <img id="qv-main-img" src="" alt="Product preview" class="w-full h-full object-contain p-4 transition-all duration-300">
+          </div>
+          <div id="qv-thumbnails" class="flex gap-2 overflow-x-auto pb-1">
+            <!-- Dynamically populated thumbnails -->
+          </div>
+        </div>
+
+        <!-- Details -->
+        <div class="flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2">
+              <span id="qv-category" class="text-xs uppercase font-bold tracking-wider text-teal-600 bg-teal-50 px-2.5 py-1 rounded-md">Category</span>
+              <span id="qv-stock-badge" class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">In Stock</span>
+            </div>
+
+            <h2 id="qv-title" class="text-xl sm:text-2xl font-black text-slate-900 mt-2.5 leading-snug">Product Title</h2>
+            <p id="qv-brand" class="text-xs text-slate-500 font-medium">Brand: <span class="text-slate-800 font-semibold">Unknown</span></p>
+
+            <!-- Rating -->
+            <div class="flex items-center gap-2 mt-3">
+              <div id="qv-rating-stars" class="flex items-center text-amber-400"></div>
+              <span id="qv-rating-val" class="text-xs font-bold text-slate-700">4.5</span>
+            </div>
+
+            <!-- Price & Discount -->
+            <div class="flex items-baseline gap-3 mt-4">
+              <span id="qv-price" class="text-3xl font-black text-slate-900">$0.00</span>
+              <span id="qv-orig-price" class="text-sm text-slate-400 line-through">$0.00</span>
+              <span id="qv-discount" class="text-xs font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full">10% OFF</span>
+            </div>
+
+            <!-- Description -->
+            <p id="qv-description" class="text-slate-600 text-sm mt-4 leading-relaxed max-h-36 overflow-y-auto">
+              Product detailed description will appear here.
+            </p>
+          </div>
+
+          <div class="pt-6 border-t border-slate-100 mt-6 flex gap-3">
+            <button id="qv-add-to-cart-btn" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 text-sm transition shadow-lg shadow-teal-600/20 active:scale-95">
+              <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= CART DRAWER ================= -->
+  <div id="cart-drawer-overlay" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="cart-drawer" class="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+      <!-- Cart Header -->
+      <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="shopping-bag" class="w-5 h-5 text-teal-600"></i>
+          <h3 class="font-bold text-slate-900 text-lg">Your Cart</h3>
+          <span id="cart-item-count" class="text-xs font-semibold bg-slate-100 px-2 py-0.5 rounded-full text-slate-600">0 items</span>
+        </div>
+        <button id="close-cart-btn" class="p-2 hover:bg-slate-100 text-slate-400 hover:text-slate-700 rounded-full transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Cart Item List -->
+      <div id="cart-items" class="flex-1 overflow-y-auto p-5 space-y-4">
+        <!-- Filled dynamically -->
+      </div>
+
+      <!-- Empty Cart Message -->
+      <div id="cart-empty-state" class="hidden flex-1 flex flex-col items-center justify-center p-8 text-center">
+        <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 mb-4">
+          <i data-lucide="shopping-cart" class="w-8 h-8"></i>
+        </div>
+        <h4 class="font-bold text-slate-800 text-base">Your cart is empty</h4>
+        <p class="text-slate-400 text-xs mt-1">Looks like you haven't added any items yet.</p>
+        <button id="start-shopping-btn" class="mt-5 px-5 py-2.5 bg-teal-600 text-white rounded-xl text-xs font-bold hover:bg-teal-700 transition">
+          Start Exploring
+        </button>
+      </div>
+
+      <!-- Cart Footer / Summary -->
+      <div id="cart-footer" class="p-5 border-t border-slate-100 bg-slate-50/50 space-y-3">
+        <div class="flex justify-between text-sm text-slate-500">
+          <span>Subtotal</span>
+          <span id="cart-subtotal" class="font-semibold text-slate-800">$0.00</span>
+        </div>
+        <div class="flex justify-between text-sm text-slate-500">
+          <span>Standard Delivery</span>
+          <span class="text-emerald-600 font-semibold">FREE</span>
+        </div>
+        <div class="flex justify-between text-base font-extrabold text-slate-900 pt-2 border-t border-slate-200">
+          <span>Total</span>
+          <span id="cart-total" class="text-xl text-teal-700 font-black">$0.00</span>
+        </div>
+
+        <button id="checkout-btn" class="w-full mt-2 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-xl text-sm transition shadow-lg shadow-slate-900/10 active:scale-95 flex items-center justify-center gap-2">
+          <span>Proceed to Checkout</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MOBILE FILTER MODAL ================= -->
+  <div id="mobile-filter-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity lg:hidden flex justify-end">
+    <div id="mobile-filter-content" class="w-full max-w-xs bg-white h-full p-6 overflow-y-auto transform translate-x-full transition-transform flex flex-col">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <h3 class="font-bold text-slate-900 text-lg">Filters</h3>
+        <button id="close-mobile-filter-btn" class="p-2 text-slate-400 hover:text-slate-700">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="mobile-category-container" class="py-4 border-b border-slate-100">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Categories</h4>
+        <div id="mobile-category-list" class="space-y-1"></div>
+      </div>
+      <div class="py-4">
+        <button id="apply-mobile-filter-btn" class="w-full bg-teal-600 text-white py-3 rounded-xl font-bold text-sm">
+          Show Results
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TOAST NOTIFICATION ================= -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-slate-800">
+      <div class="w-7 h-7 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center flex-shrink-0">
+        <i data-lucide="check" class="w-4 h-4"></i>
+      </div>
+      <p id="toast-message" class="text-xs font-medium">Product added to your cart!</p>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT APPLICATION LOGIC ================= -->
+  <script>
+    // State management
+    const state = {
+      allProducts: [],
+      filteredProducts: [],
+      categories: [],
+      activeCategory: 'all',
+      searchQuery: '',
+      sortOption: 'default',
+      maxPrice: 2000,
+      inStockOnly: false,
+      cart: JSON.parse(localStorage.getItem('luxestore_cart') || '[]'),
+      pageLimit: 12,
+      displayedCount: 12,
+      activeQuickviewProduct: null
+    };
+
+    // DOM Elements
+    const elements = {
+      productGrid: document.getElementById('product-grid'),
+      categoryList: document.getElementById('category-list'),
+      mobileCategoryList: document.getElementById('mobile-category-list'),
+      searchInput: document.getElementById('search-input'),
+      clearSearchBtn: document.getElementById('clear-search-btn'),
+      sortSelect: document.getElementById('sort-select'),
+      priceRange: document.getElementById('price-range'),
+      priceVal: document.getElementById('price-val'),
+      inStockCheckbox: document.getElementById('in-stock-checkbox'),
+      resetFiltersBtn: document.getElementById('reset-filters-btn'),
+      emptyResetBtn: document.getElementById('empty-reset-btn'),
+      activeCategoryPill: document.getElementById('active-category-pill'),
+      resultsCountText: document.getElementById('results-count-text'),
+      totalCount: document.getElementById('total-count'),
+      loadMoreBtn: document.getElementById('load-more-btn'),
+      loadMoreContainer: document.getElementById('load-more-container'),
+      emptyState: document.getElementById('empty-state'),
+      
+      // Cart elements
+      cartBadge: document.getElementById('cart-badge'),
+      openCartBtn: document.getElementById('open-cart-btn'),
+      closeCartBtn: document.getElementById('close-cart-btn'),
+      cartDrawerOverlay: document.getElementById('cart-drawer-overlay'),
+      cartDrawer: document.getElementById('cart-drawer'),
+      cartItems: document.getElementById('cart-items'),
+      cartEmptyState: document.getElementById('cart-empty-state'),
+      cartFooter: document.getElementById('cart-footer'),
+      cartSubtotal: document.getElementById('cart-subtotal'),
+      cartTotal: document.getElementById('cart-total'),
+      cartItemCount: document.getElementById('cart-item-count'),
+      startShoppingBtn: document.getElementById('start-shopping-btn'),
+      checkoutBtn: document.getElementById('checkout-btn'),
+
+      // Quickview elements
+      quickviewModal: document.getElementById('quickview-modal'),
+      quickviewCard: document.getElementById('quickview-card'),
+      closeQuickviewBtn: document.getElementById('close-quickview-btn'),
+      qvMainImg: document.getElementById('qv-main-img'),
+      qvThumbnails: document.getElementById('qv-thumbnails'),
+      qvTitle: document.getElementById('qv-title'),
+      qvCategory: document.getElementById('qv-category'),
+      qvStockBadge: document.getElementById('qv-stock-badge'),
+      qvBrand: document.getElementById('qv-brand'),
+      qvPrice: document.getElementById('qv-price'),
+      qvOrigPrice: document.getElementById('qv-orig-price'),
+      qvDiscount: document.getElementById('qv-discount'),
+      qvDescription: document.getElementById('qv-description'),
+      qvRatingStars: document.getElementById('qv-rating-stars'),
+      qvRatingVal: document.getElementById('qv-rating-val'),
+      qvAddToCartBtn: document.getElementById('qv-add-to-cart-btn'),
+
+      // Mobile filters
+      mobileFilterBtn: document.getElementById('mobile-filter-btn'),
+      mobileFilterModal: document.getElementById('mobile-filter-modal'),
+      mobileFilterContent: document.getElementById('mobile-filter-content'),
+      closeMobileFilterBtn: document.getElementById('close-mobile-filter-btn'),
+      applyMobileFilterBtn: document.getElementById('apply-mobile-filter-btn'),
+
+      // Toast
+      toast: document.getElementById('toast'),
+      toastMessage: document.getElementById('toast-message')
+    };
+
+    // Render loading skeletons
+    function renderSkeletons() {
+      elements.productGrid.innerHTML = Array(6).fill(0).map(() => `
+        <div class="bg-white rounded-2xl p-4 border border-slate-100 flex flex-col">
+          <div class="w-full aspect-[4/3] rounded-xl shimmer mb-4"></div>
+          <div class="h-4 w-1/3 shimmer rounded mb-2"></div>
+          <div class="h-5 w-3/4 shimmer rounded mb-3"></div>
+          <div class="h-4 w-1/2 shimmer rounded mt-auto"></div>
+        </div>
+      `).join('');
+    }
+
+    // Fetch initial products and categories from DummyJSON
+    async function initCatalog() {
+      renderSkeletons();
+      try {
+        // Fetch up to 100 products for complete client filtering and snappy responsive UX
+        const res = await fetch('https://dummyjson.com/products?limit=100');
+        const data = await res.json();
+        state.allProducts = data.products || [];
+        
+        elements.totalCount.textContent = state.allProducts.length;
+
+        // Derive unique categories
+        const catMap = new Set();
+        state.allProducts.forEach(p => {
+          if (p.category) catMap.add(p.category);
+        });
+        state.categories = Array.from(catMap).sort();
+
+        renderCategories();
+        applyFilters();
+        updateCartBadge();
+      } catch (err) {
+        console.error('Failed to load products:', err);
+        elements.productGrid.innerHTML = `
+          <div class="col-span-full py-16 text-center text-red-500">
+            <p class="font-bold">Failed to load product catalog.</p>
+            <p class="text-xs text-slate-500 mt-1">Please check your internet connection and try reloading.</p>
+          </div>
+        `;
+      }
+    }
+
+    // Render category sidebar links
+    function renderCategories() {
+      const renderPills = (targetEl) => {
+        let html = `
+          <button 
+            data-cat="all" 
+            class="cat-pill w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between transition ${state.activeCategory === 'all' ? 'bg-teal-600 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100'}"
+          >
+            <span>All Categories</span>
+            <span class="text-[10px] opacity-80">${state.allProducts.length}</span>
+          </button>
+        `;
+
+        state.categories.forEach(cat => {
+          const count = state.allProducts.filter(p => p.category === cat).length;
+          const isActive = state.activeCategory === cat;
+          const displayName = cat.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+          html += `
+            <button 
+              data-cat="${cat}" 
+              class="cat-pill w-full text-left px-3 py-2 rounded-xl text-xs font-medium flex items-center justify-between transition ${isActive ? 'bg-teal-600 text-white font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100'}"
+            >
+              <span class="truncate capitalize">${displayName}</span>
+              <span class="text-[10px] opacity-80 ml-2">${count}</span>
+            </button>
+          `;
+        });
+        targetEl.innerHTML = html;
+      };
+
+      renderPills(elements.categoryList);
+      renderPills(elements.mobileCategoryList);
+
+      // Add listeners
+      document.querySelectorAll('.cat-pill').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const cat = e.currentTarget.dataset.cat;
+          setCategory(cat);
+          closeMobileFilters();
+        });
+      });
+    }
+
+    function setCategory(cat) {
+      state.activeCategory = cat;
+      state.displayedCount = state.pageLimit;
+      const formattedTitle = cat === 'all' ? 'All Products' : cat.replace(/-/g, ' ').toUpperCase();
+      elements.activeCategoryPill.textContent = formattedTitle;
+      renderCategories();
+      applyFilters();
+    }
+
+    // Filter, Sort, and Render pipeline
+    function applyFilters() {
+      let result = [...state.allProducts];
+
+      // 1. Search Query filter
+      if (state.searchQuery.trim() !== '') {
+        const query = state.searchQuery.toLowerCase();
+        result = result.filter(item => {
+          const inTitle = item.title?.toLowerCase().includes(query);
+          const inDesc = item.description?.toLowerCase().includes(query);
+          const inBrand = item.brand?.toLowerCase().includes(query);
+          const inCategory = item.category?.toLowerCase().includes(query);
+          const inTags = item.tags ? item.tags.some(t => t.toLowerCase().includes(query)) : false;
+          return inTitle || inDesc || inBrand || inCategory || inTags;
+        });
+      }
+
+      // 2. Category filter
+      if (state.activeCategory !== 'all') {
+        result = result.filter(item => item.category === state.activeCategory);
+      }
+
+      // 3. Price filter
+      result = result.filter(item => item.price <= state.maxPrice);
+
+      // 4. In Stock filter
+      if (state.inStockOnly) {
+        result = result.filter(item => (item.stock || 0) > 0);
+      }
+
+      // 5. Sorting
+      switch (state.sortOption) {
+        case 'price-asc':
+          result.sort((a, b) => a.price - b.price);
+          break;
+        case 'price-desc':
+          result.sort((a, b) => b.price - a.price);
+          break;
+        case 'rating-desc':
+          result.sort((a, b) => b.rating - a.rating);
+          break;
+        case 'title-asc':
+          result.sort((a, b) => a.title.localeCompare(b.title));
+          break;
+        default:
+          break;
+      }
+
+      state.filteredProducts = result;
+      elements.resultsCountText.textContent = `(${result.length} found)`;
+      renderProductGrid();
+    }
+
+    // Render Product Cards
+    function renderProductGrid() {
+      const itemsToDisplay = state.filteredProducts.slice(0, state.displayedCount);
+
+      if (itemsToDisplay.length === 0) {
+        elements.productGrid.innerHTML = '';
+        elements.emptyState.classList.remove('hidden');
+        elements.loadMoreContainer.classList.add('hidden');
+        return;
+      }
+
+      elements.emptyState.classList.add('hidden');
+      
+      elements.productGrid.innerHTML = itemsToDisplay.map(product => {
+        const discountPrice = product.discountPercentage 
+          ? (product.price / (1 - (product.discountPercentage / 100))).toFixed(2)
+          : null;
+
+        const stars = generateStarRating(product.rating || 0);
+
+        return `
+          <div class="bg-white rounded-2xl border border-slate-200/80 hover:border-slate-300 hover:shadow-lg transition-all duration-300 flex flex-col overflow-hidden group">
+            
+            <!-- Product Thumbnail Area -->
+            <div class="relative bg-slate-50 aspect-square overflow-hidden cursor-pointer quickview-trigger" data-id="${product.id}">
+              <img 
+                src="${product.thumbnail}" 
+                alt="${product.title}" 
+                loading="lazy"
+                class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+                onerror="this.src='https://placehold.co/400x400/f8fafc/64748b?text=LuxeStore'"
+              />
+
+              <!-- Top badges -->
+              <div class="absolute top-3 left-3 flex flex-col gap-1 items-start">
+                ${product.discountPercentage ? `
+                  <span class="bg-rose-500 text-white font-extrabold text-[10px] tracking-wide px-2 py-0.5 rounded-full shadow-sm">
+                    -${Math.round(product.discountPercentage)}%
+                  </span>
+                ` : ''}
+              </div>
+
+              <!-- Quick action button hover overlay -->
+              <div class="absolute inset-0 bg-slate-900/20 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2">
+                <button 
+                  class="quickview-trigger bg-white text-slate-800 p-2.5 rounded-xl font-medium text-xs shadow-md hover:bg-slate-100 transition active:scale-95 flex items-center gap-1.5"
+                  data-id="${product.id}"
+                >
+                  <i data-lucide="eye" class="w-4 h-4 text-slate-700"></i>
+                  <span>Quick View</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="p-4 sm:p-5 flex-1 flex flex-col">
+              <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+                <span class="capitalize font-medium text-teal-600 bg-teal-50 px-2 py-0.5 rounded-md">${product.category || 'Item'}</span>
+                <span class="font-medium ${product.stock > 5 ? 'text-slate-400' : 'text-amber-600 font-semibold'}">
+                  ${product.stock > 0 ? `${product.stock} in stock` : 'Out of Stock'}
+                </span>
+              </div>
+
+              <h3 class="font-bold text-slate-900 text-sm sm:text-base line-clamp-1 group-hover:text-teal-600 transition-colors">
+                ${product.title}
+              </h3>
+
+              <!-- Rating -->
+              <div class="flex items-center gap-1 mt-1.5">
+                <div class="flex items-center text-amber-400 text-xs">${stars}</div>
+                <span class="text-[11px] font-bold text-slate-500 ml-1">(${product.rating?.toFixed(1) || '0.0'})</span>
+              </div>
+
+              <!-- Price & CTA -->
+              <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                <div>
+                  <div class="flex items-baseline gap-1.5">
+                    <span class="text-lg font-black text-slate-900">$${product.price}</span>
+                    ${discountPrice ? `<span class="text-xs text-slate-400 line-through">$${discountPrice}</span>` : ''}
+                  </div>
+                </div>
+
+                <button 
+                  class="add-to-cart-btn bg-slate-900 hover:bg-teal-600 text-white p-2.5 sm:px-3 sm:py-2 rounded-xl text-xs font-semibold transition-all duration-200 active:scale-90 flex items-center gap-1.5 shadow-sm"
+                  data-id="${product.id}"
+                  ${product.stock === 0 ? 'disabled' : ''}
+                >
+                  <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                  <span class="hidden sm:inline">Add</span>
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+        `;
+      }).join('');
+
+      // Refresh lucide icons
+      lucide.createIcons();
+
+      // Show/hide load more button
+      if (state.displayedCount >= state.filteredProducts.length) {
+        elements.loadMoreContainer.classList.add('hidden');
+      } else {
+        elements.loadMoreContainer.classList.remove('hidden');
+      }
+
+      // Attach dynamic listeners for cards
+      document.querySelectorAll('.quickview-trigger').forEach(el => {
+        el.addEventListener('click', (e) => {
+          const pid = Number(e.currentTarget.dataset.id);
+          openQuickView(pid);
+        });
+      });
+
+      document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const pid = Number(btn.dataset.id);
+          addToCart(pid);
+        });
+      });
+    }
+
+    // Helper: Star rating generator
+    function generateStarRating(rating) {
+      const fullStars = Math.floor(rating);
+      let starsHtml = '';
+      for (let i = 0; i < 5; i++) {
+        if (i < fullStars) {
+          starsHtml += '<i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>';
+        } else {
+          starsHtml += '<i data-lucide="star" class="w-3.5 h-3.5 text-slate-300"></i>';
+        }
+      }
+      return starsHtml;
+    }
+
+    // Quick View Modal Handlers
+    function openQuickView(productId) {
+      const product = state.allProducts.find(p => p.id === productId);
+      if (!product) return;
+
+      state.activeQuickviewProduct = product;
+
+      elements.qvMainImg.src = product.thumbnail;
+      elements.qvTitle.textContent = product.title;
+      elements.qvCategory.textContent = product.category;
+      elements.qvBrand.innerHTML = `Brand: <span class="text-slate-800 font-semibold">${product.brand || 'Generic'}</span>`;
+      elements.qvDescription.textContent = product.description;
+      elements.qvPrice.textContent = `$${product.price}`;
+
+      if (product.discountPercentage) {
+        const origPrice = (product.price / (1 - (product.discountPercentage / 100))).toFixed(2);
+        elements.qvOrigPrice.textContent = `$${origPrice}`;
+        elements.qvOrigPrice.classList.remove('hidden');
+        elements.qvDiscount.textContent = `${Math.round(product.discountPercentage)}% OFF`;
+        elements.qvDiscount.classList.remove('hidden');
+      } else {
+        elements.qvOrigPrice.classList.add('hidden');
+        elements.qvDiscount.classList.add('hidden');
+      }
+
+      elements.qvRatingVal.textContent = product.rating?.toFixed(1);
+      elements.qvRatingStars.innerHTML = generateStarRating(product.rating || 0);
+
+      if (product.stock > 0) {
+        elements.qvStockBadge.textContent = `${product.stock} in stock`;
+        elements.qvStockBadge.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700';
+      } else {
+        elements.qvStockBadge.textContent = 'Out of Stock';
+        elements.qvStockBadge.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700';
+      }
+
+      // Thumbnails gallery
+      const images = product.images && product.images.length > 0 ? product.images : [product.thumbnail];
+      elements.qvThumbnails.innerHTML = images.map((imgUrl, index) => `
+        <button class="qv-thumb-btn w-12 h-12 rounded-lg border-2 ${index === 0 ? 'border-teal-500' : 'border-slate-200'} overflow-hidden flex-shrink-0 bg-slate-50 transition" data-url="${imgUrl}">
+          <img src="${imgUrl}" class="w-full h-full object-cover">
+        </button>
+      `).join('');
+
+      document.querySelectorAll('.qv-thumb-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.qv-thumb-btn').forEach(b => b.classList.replace('border-teal-500', 'border-slate-200'));
+          btn.classList.replace('border-slate-200', 'border-teal-500');
+          elements.qvMainImg.src = btn.dataset.url;
+        });
+      });
+
+      // Show modal
+      elements.quickviewModal.classList.remove('opacity-0', 'pointer-events-none');
+      elements.quickviewCard.classList.remove('scale-95');
+      elements.quickviewCard.classList.add('scale-100');
+      lucide.createIcons();
+    }
+
+    function closeQuickView() {
+      elements.quickviewModal.classList.add('opacity-0', 'pointer-events-none');
+      elements.quickviewCard.classList.remove('scale-100');
+      elements.quickviewCard.classList.add('scale-95');
+      state.activeQuickviewProduct = null;
+    }
+
+    // Shopping Cart Logic
+    function addToCart(productId) {
+      const product = state.allProducts.find(p => p.id === productId);
+      if (!product) return;
+
+      const existingItem = state.cart.find(i => i.id === productId);
+      if (existingItem) {
+        if (existingItem.quantity < product.stock) {
+          existingItem.quantity += 1;
+        } else {
+          showToast(`Max stock reached for this item.`);
+          return;
+        }
+      } else {
+        state.cart.push({
+          id: product.id,
+          title: product.title,
+          price: product.price,
+          thumbnail: product.thumbnail,
+          stock: product.stock,
+          quantity: 1
+        });
+      }
+
+      saveCart();
+      updateCartBadge();
+      showToast(`Added "${product.title}" to cart!`);
+    }
+
+    function updateCartItemQuantity(productId, delta) {
+      const item = state.cart.find(i => i.id === productId);
+      if (!item) return;
+
+      item.quantity += delta;
+      if (item.quantity <= 0) {
+        state.cart = state.cart.filter(i => i.id !== productId);
+      }
+      saveCart();
+      renderCartDrawer();
+      updateCartBadge();
+    }
+
+    function removeCartItem(productId) {
+      state.cart = state.cart.filter(i => i.id !== productId);
+      saveCart();
+      renderCartDrawer();
+      updateCartBadge();
+    }
+
+    function saveCart() {
+      localStorage.setItem('luxestore_cart', JSON.stringify(state.cart));
+    }
+
+    function updateCartBadge() {
+      const totalCount = state.cart.reduce((sum, item) => sum + item.quantity, 0);
+      elements.cartBadge.textContent = totalCount;
+      if (totalCount > 0) {
+        elements.cartBadge.classList.add('scale-110');
+        setTimeout(() => elements.cartBadge.classList.remove('scale-110'), 200);
+      }
+    }
+
+    function renderCartDrawer() {
+      if (state.cart.length === 0) {
+        elements.cartItems.innerHTML = '';
+        elements.cartEmptyState.classList.remove('hidden');
+        elements.cartFooter.classList.add('hidden');
+        elements.cartItemCount.textContent = '0 items';
+        return;
+      }
+
+      elements.cartEmptyState.classList.add('hidden');
+      elements.cartFooter.classList.remove('hidden');
+
+      const totalItems = state.cart.reduce((acc, curr) => acc + curr.quantity, 0);
+      elements.cartItemCount.textContent = `${totalItems} item${totalItems > 1 ? 's' : ''}`;
+
+      elements.cartItems.innerHTML = state.cart.map(item => `
+        <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
+          <img src="${item.thumbnail}" alt="${item.title}" class="w-16 h-16 object-contain bg-white rounded-xl p-1 border border-slate-200/80">
+          <div class="flex-1 min-w-0">
+            <h4 class="font-bold text-xs text-slate-800 truncate">${item.title}</h4>
+            <p class="text-xs font-black text-teal-600 mt-0.5">$${item.price}</p>
+            
+            <div class="flex items-center gap-2 mt-2">
+              <div class="flex items-center border border-slate-200 rounded-lg bg-white overflow-hidden shadow-sm">
+                <button class="cart-qty-btn px-2 py-0.5 text-xs text-slate-500 hover:bg-slate-100" data-id="${item.id}" data-delta="-1">-</button>
+                <span class="px-2 text-xs font-bold text-slate-700">${item.quantity}</span>
+                <button class="cart-qty-btn px-2 py-0.5 text-xs text-slate-500 hover:bg-slate-100" data-id="${item.id}" data-delta="1">+</button>
+              </div>
+              <button class="cart-remove-btn text-xs text-rose-500 hover:text-rose-700 p-1" data-id="${item.id}">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="text-xs font-bold text-slate-900">$${(item.price * item.quantity).toFixed(2)}</p>
+          </div>
+        </div>
+      `).join('');
+
+      // Subtotals
+      const subtotal = state.cart.reduce((acc, cur) => acc + (cur.price * cur.quantity), 0);
+      elements.cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+      elements.cartTotal.textContent = `$${subtotal.toFixed(2)}`;
+
+      lucide.createIcons();
+
+      // Listeners inside cart
+      document.querySelectorAll('.cart-qty-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const pid = Number(btn.dataset.id);
+          const delta = Number(btn.dataset.delta);
+          updateCartItemQuantity(pid, delta);
+        });
+      });
+
+      document.querySelectorAll('.cart-remove-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const pid = Number(btn.dataset.id);
+          removeCartItem(pid);
+        });
+      });
+    }
+
+    function openCart() {
+      renderCartDrawer();
+      elements.cartDrawerOverlay.classList.remove('opacity-0', 'pointer-events-none');
+      elements.cartDrawer.classList.remove('translate-x-full');
+    }
+
+    function closeCart() {
+      elements.cartDrawerOverlay.classList.add('opacity-0', 'pointer-events-none');
+      elements.cartDrawer.classList.add('translate-x-full');
+    }
+
+    // Mobile Filters Modal
+    function openMobileFilters() {
+      elements.mobileFilterModal.classList.remove('opacity-0', 'pointer-events-none');
+      elements.mobileFilterContent.classList.remove('translate-x-full');
+    }
+
+    function closeMobileFilters() {
+      elements.mobileFilterModal.classList.add('opacity-0', 'pointer-events-none');
+      elements.mobileFilterContent.classList.add('translate-x-full');
+    }
+
+    // Toast message helper
+    let toastTimeout;
+    function showToast(msg) {
+      elements.toastMessage.textContent = msg;
+      elements.toast.classList.remove('translate-y-20', 'opacity-0');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        elements.toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2500);
+    }
+
+    // Reset filters
+    function resetAllFilters() {
+      state.activeCategory = 'all';
+      state.searchQuery = '';
+      elements.searchInput.value = '';
+      elements.clearSearchBtn.classList.add('hidden');
+      state.sortOption = 'default';
+      elements.sortSelect.value = 'default';
+      state.maxPrice = 2000;
+      elements.priceRange.value = 2000;
+      elements.priceVal.textContent = '$2000';
+      state.inStockOnly = false;
+      elements.inStockCheckbox.checked = false;
+      elements.activeCategoryPill.textContent = 'All Products';
+      state.displayedCount = state.pageLimit;
+      renderCategories();
+      applyFilters();
+    }
+
+    // Event Listeners setup
+    function initListeners() {
+      // Live search input
+      elements.searchInput.addEventListener('input', (e) => {
+        state.searchQuery = e.target.value;
+        if (state.searchQuery.length > 0) {
+          elements.clearSearchBtn.classList.remove('hidden');
+        } else {
+          elements.clearSearchBtn.classList.add('hidden');
+        }
+        state.displayedCount = state.pageLimit;
+        applyFilters();
+      });
+
+      elements.clearSearchBtn.addEventListener('click', () => {
+        elements.searchInput.value = '';
+        state.searchQuery = '';
+        elements.clearSearchBtn.classList.add('hidden');
+        applyFilters();
+      });
+
+      // Sort Select
+      elements.sortSelect.addEventListener('change', (e) => {
+        state.sortOption = e.target.value;
+        applyFilters();
+      });
+
+      // Price Range Slider
+      elements.priceRange.addEventListener('input', (e) => {
+        state.maxPrice = Number(e.target.value);
+        elements.priceVal.textContent = `$${state.maxPrice}`;
+        state.displayedCount = state.pageLimit;
+        applyFilters();
+      });
+
+      // In Stock Checkbox
+      elements.inStockCheckbox.addEventListener('change', (e) => {
+        state.inStockOnly = e.target.checked;
+        state.displayedCount = state.pageLimit;
+        applyFilters();
+      });
+
+      // Reset buttons
+      elements.resetFiltersBtn.addEventListener('click', resetAllFilters);
+      elements.emptyResetBtn.addEventListener('click', resetAllFilters);
+
+      // Load More
+      elements.loadMoreBtn.addEventListener('click', () => {
+        state.displayedCount += state.pageLimit;
+        renderProductGrid();
+      });
+
+      // Quickview Modal events
+      elements.closeQuickviewBtn.addEventListener('click', closeQuickView);
+      elements.quickviewModal.addEventListener('click', (e) => {
+        if (e.target === elements.quickviewModal) closeQuickView();
+      });
+      elements.qvAddToCartBtn.addEventListener('click', () => {
+        if (state.activeQuickviewProduct) {
+          addToCart(state.activeQuickviewProduct.id);
+          closeQuickView();
+        }
+      });
+
+      // Cart Drawer events
+      elements.openCartBtn.addEventListener('click', openCart);
+      elements.closeCartBtn.addEventListener('click', closeCart);
+      elements.cartDrawerOverlay.addEventListener('click', (e) => {
+        if (e.target === elements.cartDrawerOverlay) closeCart();
+      });
+      elements.startShoppingBtn.addEventListener('click', closeCart);
+      elements.checkoutBtn.addEventListener('click', () => {
+        showToast('Checkout simulated! Thank you for ordering.');
+        state.cart = [];
+        saveCart();
+        renderCartDrawer();
+        updateCartBadge();
+        setTimeout(closeCart, 1000);
+      });
+
+      // Mobile Filters events
+      elements.mobileFilterBtn.addEventListener('click', openMobileFilters);
+      elements.closeMobileFilterBtn.addEventListener('click', closeMobileFilters);
+      elements.applyMobileFilterBtn.addEventListener('click', closeMobileFilters);
+      elements.mobileFilterModal.addEventListener('click', (e) => {
+        if (e.target === elements.mobileFilterModal) closeMobileFilters();
+      });
+
+      // Keyboard escape to close modals
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeQuickView();
+          closeCart();
+          closeMobileFilters();
+        }
+      });
+    }
+
+    // Run on startup
+    window.addEventListener('DOMContentLoaded', () => {
+      initListeners();
+      initCatalog();
+    });
+  </script>
+</body>
+</html>
